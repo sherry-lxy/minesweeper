@@ -220,6 +220,6 @@ while choose == 1:
             
             win = 1
     print("\n*************結果*************\n")
-    
+   
     print_mine_map(mine_map)
     choose = int(input("ゲームを続行しますか？(Yes:1 No:2):"))
