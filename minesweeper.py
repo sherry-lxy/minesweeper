@@ -23,7 +23,6 @@ class Game:
 
     def init_game_board(self):
         """ ゲーム盤を初期化 """
-        # <-- (STEP 1) ここにコードを追加 
 
         self.game_board = [[CLOSE for i in range(MS_SIZE)] for j in range(MS_SIZE)]
 
@@ -45,7 +44,6 @@ class Game:
         
         地雷セルに-1を設定する．      
         """
-        # <-- (STEP 2) ここにコードを追加
 
         self.mine_map = [[CLOSE for i in range(MS_SIZE)] for j in range(MS_SIZE)]
         if number_of_mines < 0:
@@ -66,7 +64,6 @@ class Game:
         """ 8近傍の地雷数をカウントしmine_mapに格納 
         地雷数をmine_map[][]に設定する．
         """
-        # <-- (STEP 3) ここにコードを追加
 
         for y in range(MS_SIZE):
         	for x in range(MS_SIZE):
@@ -94,7 +91,6 @@ class Game:
                    地雷セル，FLAGが設定されたセルは開けない．
           False -- 地雷があるセルを開けてしまった場合（ゲームオーバ）
         """
-        # <-- (STEP 4) ここにコードを追加
 
         
         if self.mine_map[y][x] == -1:
@@ -130,7 +126,6 @@ class Game:
         """
         セル(x, y)にフラグを設定する，既に設定されている場合はCLOSE状態にする
         """
-        # <-- (STEP 5) ここにコードを追加
 
         if self.game_board[y][x] == FLAG:
         	self.game_board[y][x] = CLOSE
@@ -141,7 +136,6 @@ class Game:
             
     def is_finished(self):
         """ 地雷セル以外のすべてのセルが開かれたかチェック """
-        # <-- (STEP 6) ここにコードを追加
 
         count = 0
 
