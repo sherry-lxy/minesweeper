@@ -91,7 +91,6 @@ class Game:
                    地雷セル，FLAGが設定されたセルは開けない．
           False -- 地雷があるセルを開けてしまった場合（ゲームオーバ）
         """
-
         
         if self.mine_map[y][x] == -1:
        		return False
