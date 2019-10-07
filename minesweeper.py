@@ -26,7 +26,7 @@ class Game:
     def init_game_board(self):
         """ ゲーム盤を初期化 """
 
-        self.game_board = np.array([[CLOSE for i in range(MS_SIZE)] for j in range(MS_SIZE)])              
+        self.game_board = np.array([[CLOSE for i in range(MS_SIZE)] for j in range(MS_SIZE)])             
 
     def init_mine_map(self, number_of_mines):
         """ 地雷マップ(self->mine_map)の初期化
@@ -55,12 +55,12 @@ class Game:
         	self.mine_map[y][x] = -1 # 地雷として設定する
         	fy[m] = fy[end - 1] # 一番後ろの数値ともうすでに取り出した数値と書き換える
         	end -= 1 # 最後位を更新する
-
+     
     def count_mines(self):
         """ 8近傍の地雷数をカウントしmine_mapに格納 
         地雷数をmine_map[][]に設定する．
         """
-		
+
         for y in range(MS_SIZE):
         	for x in range(MS_SIZE):
         		if self.mine_map[y][x] == -1:
@@ -85,7 +85,7 @@ class Game:
                    地雷セル，FLAGが設定されたセルは開けない．
           False -- 地雷があるセルを開けてしまった場合（ゲームオーバ）
         """
-
+		
         row = [-1, 0, 1]
   
         if self.mine_map[y][x] == -1: # 地雷を選んだ場合ゲーム終了
@@ -130,12 +130,12 @@ class Game:
             
     def is_finished(self):
         """ 地雷セル以外のすべてのセルが開かれたかチェック """
-		
-        for y, x in product(range(MS_SIZE), range(MS_SIZE)):
-        	if not((self.game_board[y][x] != OPEN and self.mine_map[y][x] == -1) or (self.game_board[y][x] == OPEN and self.mine_map[y][x] >= 0)):
-        		return False
 
-        return True
+        # openしたセルの個数が地雷でないセルと一致したらゲームクリア
+        if np.sum(self.game_board[:MS_SIZE, :MS_SIZE] == OPEN) == MS_SIZE**2 - np.sum(self.mine_map[:MS_SIZE, :MS_SIZE] == -1):
+        	return True
+        else:
+        	return False
        
     def print_header(self):
         print("=====================================")
