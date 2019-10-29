@@ -9,6 +9,8 @@ import numpy as np
 MS_SIZE = 8          # ゲームボードのサイズ
 CLOSE, OPEN, FLAG = 0, 1, 2
 
+# ★今までに作成したコードからGameクラスをコピー★
+
 class Game:
     #pass
     def __init__(self, number_of_mines = 10):
@@ -29,6 +31,7 @@ class Game:
 
     def init_game_board(self):
         """ ゲーム盤を初期化 """
+        # <-- (STEP 1) ここにコードを追加 
 
         self.game_board = np.array([[CLOSE for i in range(MS_SIZE)] for j in range(MS_SIZE)])                
 
@@ -39,14 +42,15 @@ class Game:
         
         地雷セルに-1を設定する．      
         """
+        # <-- (STEP 2) ここにコードを追加
 
         self.mine_map = np.array([[CLOSE for i in range(MS_SIZE)] for j in range(MS_SIZE)])
 
         # 例外処理
         if number_of_mines < 0:
         	number_of_mines = 0
-        elif number_of_mines > 64:
-        	number_of_mines = 64
+        elif number_of_mines > MS_SIZE**2:
+        	number_of_mines = MS_SIZE**2
 
 
         fy = np.array([i for i in range(MS_SIZE**2)]) # 0~63の行列の用意する
@@ -64,6 +68,7 @@ class Game:
         """ 8近傍の地雷数をカウントしmine_mapに格納 
         地雷数をmine_map[][]に設定する．
         """
+        # <-- (STEP 3) ここにコードを追加
 
         for y in range(MS_SIZE):
         	for x in range(MS_SIZE):
@@ -89,6 +94,7 @@ class Game:
                    地雷セル，FLAGが設定されたセルは開けない．
           False -- 地雷があるセルを開けてしまった場合（ゲームオーバ）
         """
+        # <-- (STEP 4) ここにコードを追加
 
         row = [-1, 0, 1]
   
@@ -124,6 +130,7 @@ class Game:
         """
         セル(x, y)にフラグを設定する，既に設定されている場合はCLOSE状態にする
         """
+        # <-- (STEP 5) ここにコードを追加
 
         if self.game_board[y][x] == FLAG:
         	self.game_board[y][x] = CLOSE
@@ -134,6 +141,7 @@ class Game:
             
     def is_finished(self):
         """ 地雷セル以外のすべてのセルが開かれたかチェック """
+        # <-- (STEP 6) ここにコードを追加
 
         # openしたセルの個数が地雷でないセルと一致したらゲームクリア
         if np.sum(self.game_board[:MS_SIZE, :MS_SIZE] == OPEN) == MS_SIZE**2 - np.sum(self.mine_map[:MS_SIZE, :MS_SIZE] == -1):
@@ -177,6 +185,8 @@ class MyPushButton(QPushButton):
         
     def on_click(self):
         """ セルをクリックしたときの動作 """
+        # ★以下，コードを追加★
+        # pass
 
         self.resize(250, 150)
 
@@ -187,23 +197,20 @@ class MyPushButton(QPushButton):
         	#print("flag")
         else:
         	if self.parent.game.open_cell(self.x, self.y) == False: # 地雷セルを開けた場合
-        		if self.parent.game.game_board[self.y][self.x] == FLAG: 
-        			self.parent.game.game_board[self.y][self.x] == CLOSE
-        		else:
-        			print("Game Over!") # gameoverを表示する
-        			QMessageBox.information(self, "Game Over", "ゲームオーバー！") # メッセージボックスでgameoverを表示する
+        		print("Game Over!") # gameoverを表示する
+        		self.parent.show_answer() # 地雷を表示する
+        		QMessageBox.information(self, "Game Over", "ゲームオーバー！") # メッセージボックスでgameoverを表示する
 
-        			self.parent.show_answer()
-        			QMessageBox.information(self, "Answer", "答え")
+        		self.parent.close() # アプリケーションを終了する
 
-        			self.parent.close() # アプリケーションを終了する
         	if self.parent.game.open_cell(self.x, self.y) == FLAG: # フラグ立っているところが開けたら何も起きない
         		pass
 
         self.parent.show_cell_status() # セル状態を表示する
 
-        if self.parent.game.is_finished() == True:
+        if self.parent.game.is_finished() == True: # ゲームクリアした場合
         	print("Game Clear!")
+        	self.parent.show_answer() # 地雷を表示する
         	QMessageBox.information(self, "Game Clear", "ゲームクリア！") # メッセージボックスでgameclearを表示する
         	self.parent.close() # アプリケーションを終了する
 
@@ -221,15 +228,17 @@ class MinesweeperWindow(QMainWindow):
         """ UIの初期化 """        
         self.resize(800, 800) 
         self.setWindowTitle('Minesweeper')
+        self.setWindowIcon(QIcon('mine.png')) # アイコンを地雷のアイコンに設定する
         
+        # ★以下，コードを追加★
         sb = self.statusBar()
         sb.showMessage("Shift+クリックでフラグをセット") # ステータスバーにメッセージを表示
 
-        self.button = [[0 for i in range(MS_SIZE)] for j in range(MS_SIZE)]
+        self.button = [[0 for i in range(MS_SIZE)] for j in range(MS_SIZE)] # ボタンの初期化
 
-        vbox = QVBoxLayout(spacing = 0)
+        vbox = QVBoxLayout(spacing = 0) # 縦初期化
         for y in range(MS_SIZE):
-        	hbox = QHBoxLayout(spacing = 0)
+        	hbox = QHBoxLayout(spacing = 0) # 横初期化
         	for x in range(MS_SIZE):
         		self.button[y][x] = MyPushButton('x', x, y, self)
         		self.button[y][x].clicked.connect(self.button[y][x].on_click)
@@ -250,55 +259,60 @@ class MinesweeperWindow(QMainWindow):
     
     def show_cell_status(self):
         """ ゲームボードを表示 """
-		
+        # ★以下，コードを追加★
         for y in range(MS_SIZE):
         	for x in range(MS_SIZE):
-        		if self.game.game_board[y][x] == CLOSE:
+        		if self.game.game_board[y][x] == CLOSE: # まだ開いていないセル
+        			self.button[y][x].setIcon(QIcon()) # 設置したアイコンを削除
         			self.button[y][x].setText('x')
-        			self.button[y][x].set_bg_color("#6D3F00")
-        		elif self.game.game_board[y][x] == FLAG:
-        			self.button[y][x].setText('🚩')
+        			self.button[y][x].set_bg_color("#6D3F00") # ボタンの色を変更
+        		elif self.game.game_board[y][x] == FLAG: # フラグ
+        			self.button[y][x].setText(' ') # テキスト文を削除
+       				self.button[y][x].setIcon(QIcon('kuro.png')) # 死神のアイコンを設置する
+        			self.button[y][x].setIconSize(QSize(75,75)) # サイズを調整する
         			self.button[y][x].set_bg_color("#91002C")
         		else:
-        			if self.game.mine_map[y][x] == -1:
+        			if self.game.mine_map[y][x] == -1: # 地雷のセル
         				pass
         			else:
-        				if self.game.mine_map[y][x] == 0:
-        					self.button[y][x].setText(' ')
+        				if self.game.mine_map[y][x] == 0: # 0のセル何も表示しない
+        					self.button[y][x].setIcon(QIcon()) # 設置したアイコンを削除
+        					self.button[y][x].setText(' ') # 空白のセルを表示
         				else:
-        					self.button[y][x].setText(str(self.game.mine_map[y][x]))
+        					self.button[y][x].setIcon(QIcon()) # 設置したアイコンを削除
+        					self.button[y][x].setText(str(self.game.mine_map[y][x])) # 近傍の地雷数を表示
         				self.button[y][x].set_bg_color("#EB6100")
 
+    # 答えの表示
     def show_answer(self):
     	for y in range(MS_SIZE):
     		for x in range(MS_SIZE):
-        		if self.game.mine_map[y][x] == 0:
-       				if self.game.game_board[y][x] == FLAG:
+        		if self.game.mine_map[y][x] == 0: # 近傍地雷ない
+       				if self.game.game_board[y][x] == FLAG: # 間違えってフラグを立った場合
+        				self.button[y][x].setIcon(QIcon()) # 設置したアイコンを削除
         				self.button[y][x].setText(' ')
         				self.button[y][x].set_bg_color("#F39800")
        				else:
+        				self.button[y][x].setIcon(QIcon()) # 設置したアイコンを削除
         				self.button[y][x].setText(' ')
         				self.button[y][x].set_bg_color("#EB6100")
-       			elif self.game.mine_map[y][x] == -1:
-       				if self.game.game_board[y][x] == FLAG:
-       					self.button[y][x].setText('🚩')
-       					self.button[y][x].set_bg_color("#91002C")
-       				else:
-       					self.button[y][x].setText('💣')
+       			elif self.game.mine_map[y][x] == -1: # 地雷セル
+       				if self.game.game_board[y][x] == FLAG: # フラグのところはフラグのまま
+       					pass
+       				else: # まだ開いていないセルは地雷を表示
+        				self.button[y][x].setText(' ') # テキスト文を削除
+       					self.button[y][x].setIcon(QIcon('mine.png')) # 地雷のアイコン
+        				self.button[y][x].setIconSize(QSize(75,75)) 
        					self.button[y][x].set_bg_color("#5B5300")
-       			else:
-       				if self.game.game_board[y][x] == FLAG:
+       			else: # 地雷ない近傍地雷あるセル
+       				if self.game.game_board[y][x] == FLAG: # 間違えってフラグを立った場合
+       					self.button[y][x].setIcon(QIcon())
         				self.button[y][x].setText(str(self.game.mine_map[y][x]))
         				self.button[y][x].set_bg_color("#F39800")
         			else:
+        				self.button[y][x].setIcon(QIcon())
         				self.button[y][x].setText(str(self.game.mine_map[y][x]))
         				self.button[y][x].set_bg_color("#EB6100")
-
-
-
-
-
-
                  
 def main():
     app = QApplication(sys.argv)
@@ -307,4 +321,3 @@ def main():
             
 if __name__ == '__main__':
     main()
-
