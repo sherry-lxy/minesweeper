@@ -1,1 +1,4 @@
-# minesweeper
+# Minesweeper
+'''
+python minesweeper.py
+'''
