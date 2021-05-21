@@ -259,7 +259,7 @@ class MinesweeperWindow(QMainWindow):
         			self.button[y][x].set_bg_color("#6D3F00") # ボタンの色を変更
         		elif self.game.game_board[y][x] == FLAG: # フラグ
         			self.button[y][x].setText(' ') # テキスト文を削除
-       				self.button[y][x].setIcon(QIcon('kuro.png')) # 死神のアイコンを設置する
+       				self.button[y][x].setIcon(QIcon('fig/dokuro.png')) # 死神のアイコンを設置する
         			self.button[y][x].setIconSize(QSize(75,75)) # サイズを調整する
         			self.button[y][x].set_bg_color("#91002C")
         		else:
@@ -292,7 +292,7 @@ class MinesweeperWindow(QMainWindow):
        					pass
        				else: # まだ開いていないセルは地雷を表示
         				self.button[y][x].setText(' ') # テキスト文を削除
-       					self.button[y][x].setIcon(QIcon('mine.png')) # 地雷のアイコン
+       					self.button[y][x].setIcon(QIcon('fig/mine.png')) # 地雷のアイコン
         				self.button[y][x].setIconSize(QSize(75,75)) 
        					self.button[y][x].set_bg_color("#5B5300")
        			else: # 地雷ない近傍地雷あるセル
