@@ -1,4 +1,4 @@
 # Minesweeper
-'''
+```
 python minesweeper.py
-'''
+```
