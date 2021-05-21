@@ -11,7 +11,7 @@ Play the game (GUI version) with:
 ```
 python minesweeper_gui.py
 ```
-When you begin the game you will see a display like this:
+When you begin the game you will see a display like this (10 mines are set up in this game) :
 
 <img src="https://user-images.githubusercontent.com/52001212/119067586-69fdf100-ba1d-11eb-8a3f-c4c5913f5134.jpg" width="200px">
 
